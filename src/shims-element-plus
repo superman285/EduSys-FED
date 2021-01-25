@@ -1,0 +1,6 @@
+declare module 'element-plus' {
+  import ElementUI from 'element-plus'
+  export default ElementUI
+}
+
+// declare module 'element-plus'
