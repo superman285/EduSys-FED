@@ -9,7 +9,6 @@ import Layout from '@/Layout/index.vue'
 
 import store from '@/store/index'
 
-console.log('inner router table store', store)
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -141,8 +140,24 @@ const routes: Array<RouteRecordRaw> = [
         name: 'alloc-resource',
         component: () => import(/* webpackChunkName: 'alloc-resource' */ '@/views/role/alloc-resource.vue'),
         props: true // 将路由路径参数映射到组件的 props 数据中
+      },
+      {
+        path: '/course/create',
+        name: 'course-create',
+        component: () => import(/* webpackChunkName: 'course-create' */ '@/views/course/create.vue')
+      },
+      {
+        path: '/course/:courseId/edit',
+        name: 'course-edit',
+        component: () => import(/* webpackChunkName: 'course-edit' */ '@/views/course/edit.vue'),
+        props: true
+      },
+      {
+        path: '/course/:courseId/section',
+        name: 'course-section',
+        component: () => import(/* webpackChunkName: 'course-section' */ '@/views/course/section.vue'),
+        props: true
       }
-
     ]
   },
   {

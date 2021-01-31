@@ -95,7 +95,7 @@ async function onSubmit(instance: UnwrapRef<ComponentInternalInstance | null>) {
 }
 
 export default defineComponent({
-  name: 'CreateOrEdit',
+  name: 'CreateOrEditMenu',
   props: {
     isEdit: {
       type: Boolean,

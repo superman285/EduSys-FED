@@ -1,12 +1,18 @@
 <template>
-  <div class="user">用户管理</div>
+  <div class="user">
+    <user-list />
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
+import UserList from './components/List.vue'
 
 export default defineComponent({
-  name: 'UserIndex'
+  name: 'UserIndex',
+  components: {
+    UserList
+  }
 })
 </script>
 

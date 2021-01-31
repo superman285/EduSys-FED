@@ -16,6 +16,18 @@ type CreateFilter = {
   description: string
 }
 
+export type Role = {
+  id:          number;
+  createdBy:   string;
+  updatedBy:   string;
+  createdTime: string;
+  updatedTime: string;
+  operatorId:  null | number;
+  code:        string;
+  name:        string;
+  description: string;
+}
+
 export const getRoles = (data: QueryFilter) => {
   return request({
     method: 'POST',
@@ -31,7 +43,7 @@ export const deleteRole = (id: string | number) => {
   })
 }
 
-export const createOrUpdate = (data: CreateFilter) => {
+export const createOrUpdateRole = (data: CreateFilter) => {
   return request({
     method: 'POST',
     url: '/boss/role/saveOrUpdate',

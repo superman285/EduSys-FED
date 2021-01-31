@@ -8,6 +8,16 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "skipLibCheck": true,
+    //"strictNullChecks": true,
+
+    // 不允许直接赋值 obj[prop] 的报错提示取消
+    /*
+     * Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'GetCourseData'.
+     * No index signature with a parameter of type 'string' was found on type 'GetCourseData'.
+    */
+    "suppressImplicitAnyIndexErrors": true,
+
+    // support import from cjs module
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
@@ -30,6 +40,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.jsx",
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"

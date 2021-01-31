@@ -17,7 +17,7 @@ export interface IState {
   user: LoginUser | null
 }
 
-export const key: InjectionKey<Store<IState>> = Symbol()
+// export const key: InjectionKey<Store<IState>> = Symbol()
 
 export default createStore<IState>({
   state: {

@@ -49,7 +49,7 @@ const useResource = () => {
   const router = useRouter()
   const menus = ref([] as Array<any>)
   const defaultProps = reactive({
-    children: 'children',
+    children: 'resourceList',
     label: 'name'
   })
   const checkedKeys:Ref<Array<number>> = ref([])
@@ -62,18 +62,17 @@ const useResource = () => {
     const resourceCategories = ret[1].data.data
     console.log('reourceCategories in alloc-resource',resourceCategories)
 
-    resources.forEach((r: any) => {
+    /*resources.forEach((r: any) => {
       const category = resourceCategories.find((c: any) => c.id === r.categoryId)
       if (category) {
-        (category as any).children =  (category as any).children /*|| []*/
+        (category as any).children =  (category as any).children /!*|| []*!/
           (category as any).children.push(r)
       }
-    })
+    })*/
     // 修改顶层分类 ID：因为分类 ID 和资源 ID 冲突
-    resourceCategories.forEach((item: any) => {
+    /*resourceCategories.forEach((item: any) => {
       item.id = Math.random()
-    })
-    menus.value = resourceCategories
+    })*/
   }
 
   const loadCheckedKeys = (_resources: Array<any>) => {
@@ -91,20 +90,22 @@ const useResource = () => {
       data: { data: roleMenus }
     } = await getRoleResources(roleId)
     console.log('roleMenus', roleMenus, checkedKeys)
+    menus.value = roleMenus
+
     loadCheckedKeys(roleMenus)
-    console.log('checkedKeys',checkedKeys)
+    console.log('checkedKeys2',checkedKeys)
   }
 
   const onSave = async (roleId: string | number) => {
-    const menuIdList = (menuTree.value! as TTree).getCheckedKeys()
+    const resourceIdList = (menuTree.value! as TTree).getCheckedKeys()
     const { data } = await allocRoleResources({
-      roleId,
-      menuIdList
+      roleId:+roleId,
+      resourceIdList
     })
 
-    console.log('onSave data', data, menuIdList)
+    console.log('onSave data', data, resourceIdList)
     ElMessage.success('操作成功')
-    router.back()
+    //router.back()
   }
 
   const clearChecked = ()=>{

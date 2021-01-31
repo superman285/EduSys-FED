@@ -22,7 +22,7 @@ export default defineComponent({
     const ctx = ins.ctx
 
     onMounted(() => {
-      console.log('ins', ins!.proxy, ctx.cl(), ins!.proxy == ctx.cl())
+      console.log('ins', ins!.proxy, ctx!.cl(), ins!.proxy == ctx!.cl())
     })
   }
 })

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple @vue/reactivity Counter</title>
+</head>
+<body>
+<h1></h1>
+<button>+</button>
+<button>-</button>
+<script></script>
+<script type="module">
+  // import { ref, effect, computed } from 'https://cdn.skypack.dev/@vue/reactivity'
+  import { ref,  computed, watchEffect } from 'https://cdn.bootcdn.net/ajax/libs/vue/3.0.2/vue.esm-browser.prod.js'
+
+  const h1 = document.querySelector('h1')
+  const [incBtn, decBtn] = document.querySelectorAll('button')
+  const count = ref(0)
+  count.value++
+  const text = computed(() => `current count: ${count.value}`)
+  h1.innerHTML = text.value
+  watchEffect(() => {
+    h1.innerHTML = text.value
+  })
+  console.log('ref',ref)
+  incBtn.addEventListener('click', () => count.value++)
+  decBtn.addEventListener('click', () => count.value--)
+</script>
+</body>
+</html>

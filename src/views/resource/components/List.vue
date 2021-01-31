@@ -56,7 +56,7 @@
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.row)"
+              @click="handleDelete(scope.row.id)"
               >删除
             </el-button>
           </template>
@@ -107,12 +107,13 @@ import {
 import {
   getResourceCategories,
   getResourcePages,
-  ResourceCategoryTop as ResourceCategory
-} from "@/services/resource";
+  ResourceCategoryTop as ResourceCategory,
+  deleteResource
+} from '@/services/resource'
 import { getCurrentInstance } from 'vue'
 
 import CreateOrEdit from './CreateOrEdit.vue'
-import { ElForm } from 'element-plus'
+import { ElForm, ElMessage, ElMessageBox } from "element-plus";
 type TForm = typeof ElForm
 
 /*const categoryId = ref(null)
@@ -142,7 +143,7 @@ const usePagination = () => {
   const isLoading = ref(false)
 
   const dialogVisible = ref(false) // 控制添加/编辑角色的对话框显示和隐藏
-  const resourceId:Ref<number|null> = ref(null) // 编辑角色的 ID
+  const resourceId: Ref<number | null> = ref(null) // 编辑角色的 ID
   const isEdit = ref(false)
 
   const pageData = reactive({
@@ -218,6 +219,33 @@ const usePagination = () => {
     isEdit.value = true
   }
 
+  function handleDelete(resId: number) {
+    console.log('resId', resId)
+    // deleteResource(resId)
+    ElMessageBox.confirm('确认删除资源?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+      .then(async () => {
+        const { data } = await deleteResource(resId)
+        if (data.code === '000000') {
+          ElMessage({
+            message: '删除成功',
+            type: 'success'
+          })
+          loadResources(pageData)
+        }
+      })
+      .catch(err => {
+        console.info(err)
+        ElMessage({
+          message: '已取消删除',
+          type: 'info'
+        })
+      })
+  }
+
   /*const loadResources = async (resources:Ref,totalCount:Ref) => {
     const { data } = await getResourcePages({
       // 查询条件
@@ -254,7 +282,8 @@ const usePagination = () => {
     onSubmit,
     onSuccess,
     onCancel,
-    handleEdit
+    handleEdit,
+    handleDelete
   }
 }
 
@@ -317,7 +346,8 @@ export default defineComponent({
       dialogVisible,
       onSuccess,
       onCancel,
-      handleEdit
+      handleEdit,
+      handleDelete
     } = usePagination()
 
     const { ctx: _this } = getCurrentInstance() as ComponentInternalInstance
@@ -328,7 +358,7 @@ export default defineComponent({
 
     const form = ref({})
     const onReset2 = () => {
-      ;(_this.$refs.form as TForm).resetFields()
+      ;(_this!.$refs.form as TForm).resetFields()
       pageData.current = 1
       loadResources(pageData)
     }
@@ -341,14 +371,14 @@ export default defineComponent({
     console.log('instance cid', data.data)
     resourceCategories.value = data.data*/
 
-    const onAdd = ()=>{
+    const onAdd = () => {
       isEdit.value = false
       dialogVisible.value = true
     }
 
     return {
       onAdd,
-      ...useClickHandle(),
+      // ...useClickHandle(),
       handleSizeChange,
       handleCurrentChange,
       pageData,
@@ -363,10 +393,13 @@ export default defineComponent({
       dialogVisible,
       onSuccess,
       onCancel,
-      handleEdit
+      handleEdit,
+      handleDelete
     }
   }
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

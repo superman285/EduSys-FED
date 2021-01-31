@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, useContext } from 'vue'
-import { createOrUpdate, getResourceById, getResourceCategories } from '@/services/resource'
+import { createOrUpdateResource, getResourceById, getResourceCategories } from '@/services/resource'
 import { ElMessage } from 'element-plus'
 import { toRefs } from 'vue'
 import { Ref } from 'vue'
@@ -70,7 +70,7 @@ const useResource = () => {
   }
 
   async function onSubmit() {
-    await createOrUpdate(resource)
+    await createOrUpdateResource(resource)
     ElMessage.success('操作成功')
     emit('success')
   }

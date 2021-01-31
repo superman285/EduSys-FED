@@ -50,7 +50,7 @@ export const getResourceById = (id:number)=>{
   })
 }
 
-export const createOrUpdate = (data: Resource) => {
+export const createOrUpdateResource = (data: Resource) => {
   return request({
     method: 'POST',
     url: '/boss/resource/saveOrUpdate',
@@ -93,7 +93,7 @@ export type ResourceCategoryTop = BaseResourceCategory & {
   children: Array<ResourceSubCategory>
 }
 
-export const getResourceCategories = ():AxiosPromise<ResourceCategoryRes> => {
+export const getResourceCategories = ():any/*AxiosPromise<ResourceCategoryRes>*/ => {
   return request({
     method: 'GET',
     url: '/boss/resource/category/getAll'
@@ -103,6 +103,6 @@ export const getResourceCategories = ():AxiosPromise<ResourceCategoryRes> => {
 export const deleteResource = (id: number) => {
   return request({
     method: 'DELETE',
-    url: `/boss/role/${id}`
+    url: `/boss/resource/${id}`
   })
 }

@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { createOrUpdate, getRoleById } from '@/services/role'
+import { createOrUpdateRole, getRoleById } from '@/services/role'
 import { ElMessage } from 'element-plus'
 import { toRefs } from 'vue'
 import { Ref } from 'vue'
@@ -42,7 +42,7 @@ const useRole = (emit: any) => {
   }
 
   async function onSubmit() {
-    await createOrUpdate(role)
+    await createOrUpdateRole(role)
     ElMessage.success('操作成功')
     emit('success')
   }

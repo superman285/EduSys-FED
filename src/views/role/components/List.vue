@@ -235,7 +235,7 @@ export default defineComponent({
     const { ctx: _this } = getCurrentInstance() as ComponentInternalInstance
 
     function onReset() {
-      ;(_this.$refs.form as TForm).resetFields()
+      ;(_this!.$refs.form as TForm).resetFields()
       loadRoles()
     }
 

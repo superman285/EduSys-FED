@@ -43,7 +43,7 @@ import {
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { mapMutations, useStore } from 'vuex'
-import { key } from '@/store'
+// import { key } from '@/store'
 import request from '@/utils/request'
 import { login } from '@/services/user'
 import { ElMessage, ElForm } from 'element-plus'
@@ -93,9 +93,9 @@ export default defineComponent({
 
     const router = useRouter()
     const route = useRoute()
-    const store = useStore(key)
+    const store = useStore(/*key*/)
 
-    console.log('setup store', store, _this.$store, router, route, _this.$route)
+    console.log('setup store', store, _this!!.$route)
 
     const onSubmit = async () => {
       console.log('on submit')
@@ -103,7 +103,7 @@ export default defineComponent({
       try {
         // 1.表单验证
 
-        await (_this.$refs.form as typeof ElForm).validate()
+        await (_this!.$refs.form as typeof ElForm).validate()
 
         // 按钮loading
         isLoginLoading.value = true
@@ -117,7 +117,7 @@ export default defineComponent({
           },
           data: qs.stringify(_this.form) // axios默认发送application/json格式数据
         })*/
-        const { data } = await login(_this.form)
+        const { data } = await login(_this!.form)
 
         // 3. 处理请求结果 成功- 跳转首页 | 失败- 给出提示
         if (data.state !== 1) {
@@ -138,7 +138,7 @@ export default defineComponent({
         // _this.$store.commit('setUser',data.content) ②
         store.commit('setUser', data.content) // ③
 
-        console.log('_this store', _this, store, _this.$store)
+        console.log('_this store', _this, store, _this!.$store)
 
         router.push((route.query.redirect as string) || { name: 'home' })
         /*router.push({
