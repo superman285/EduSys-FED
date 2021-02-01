@@ -1,10 +1,10 @@
 <template>
   <h1>Edu-Boss</h1>
   <!--  根路由出口-->
-<!--TODO: 为了使用插件 暂时注释 之后去掉注释  -->
-<!--  <Suspense>-->
-      <router-view />
-<!--  </Suspense>-->
+  <!--TODO: 为了使用插件 暂时注释 之后去掉注释  -->
+  <Suspense>
+    <router-view />
+  </Suspense>
 </template>
 
 <script lang="ts" type="module">
@@ -12,7 +12,6 @@ import { defineComponent } from 'vue'
 
 import request from '@/utils/request'
 import { useStore } from 'vuex'
-
 
 export default defineComponent({
   name: 'App',
@@ -28,7 +27,6 @@ export default defineComponent({
     }).then(res => {
       console.log(res)
     })
-
   }
 })
 </script>

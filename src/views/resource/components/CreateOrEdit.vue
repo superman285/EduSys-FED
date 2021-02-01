@@ -34,15 +34,18 @@
 
 <script lang="ts">
 import { defineComponent, reactive, useContext } from 'vue'
-import { createOrUpdateResource, getResourceById, getResourceCategories } from '@/services/resource'
+import {
+  createOrUpdateResource,
+  getResourceById,
+  getResourceCategories
+} from '@/services/resource'
 import { ElMessage } from 'element-plus'
 import { toRefs } from 'vue'
 import { Ref } from 'vue'
 import { ref } from 'vue'
 
 const useResource = () => {
-
-  const {emit} = useContext()
+  const { emit } = useContext()
 
   const resource = reactive({
     id: null,
@@ -51,7 +54,7 @@ const useResource = () => {
     description: '',
     categoryId: null
   })
-  const categories:Ref<Array<any>> = ref([])
+  const categories: Ref<Array<any>> = ref([])
 
   async function loadResource(id: number) {
     const { data } = await getResourceById(id)
@@ -64,8 +67,8 @@ const useResource = () => {
   }
 
   async function loadResourceCategory() {
-    const {data} = await getResourceCategories()
-    console.log('data resourceCAT',data.data)
+    const { data } = await getResourceCategories()
+    console.log('data resourceCAT', data.data)
     categories.value = data.data
   }
 
@@ -103,7 +106,14 @@ export default defineComponent({
 
   emits: ['success', 'cancel'],
   setup(props) {
-    const { categories,resource, onSubmit, onCancel, loadResource, loadResourceCategory } = useResource()
+    const {
+      categories,
+      resource,
+      onSubmit,
+      onCancel,
+      loadResource,
+      loadResourceCategory
+    } = useResource()
 
     //const { isEdit, roleId } = toRefs(props)
 

@@ -1,6 +1,4 @@
-
-import {Ref,ref,ComponentInternalInstance} from 'vue'
-
+import { Ref, ref, ComponentInternalInstance } from 'vue'
 
 /**
  *
@@ -8,15 +6,13 @@ import {Ref,ref,ComponentInternalInstance} from 'vue'
  */
 const a = ref(2)
 
-
 /**
  * @typedef {'open' | 'close'} b
  * */
-
 
 /**
  * @type {import('@vue/cli-service').ProjectOptions}
  */
 module.exports = {
-	publicPath: 1
+  publicPath: 1
 }

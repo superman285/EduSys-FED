@@ -2,12 +2,11 @@
   <div class="course-section">
     <!-- 阶段列表 -->
     <el-card>
-      <div class="card-header" slot="header">
+      <div class="card-header">
         {{ course.courseName }}
-        <el-button
-          type="primary"
-          @click="handleShowAddSection"
-        >添加阶段</el-button>
+        <el-button type="primary" @click="handleShowAddSection"
+          >添加阶段</el-button
+        >
       </div>
       <el-tree
         :data="sections"
@@ -17,15 +16,16 @@
         v-loading="isLoading"
         @node-drop="handleSort"
       >
-        <div class="inner" slot-scope="{ node, data }">
+        <template class="inner" v-slot="{ node, data }">
           <span>{{ node.label }}</span>
           <!-- section -->
           <span v-if="data.sectionName" class="actions">
-            <el-button @click.stop="handleEditSectionShow(data)">编辑</el-button>
-            <el-button
-              type="primary"
-              @click.stop="handleShowAddLesson(data)"
-            >添加课时</el-button>
+            <el-button @click.stop="handleEditSectionShow(data)"
+              >编辑</el-button
+            >
+            <el-button type="primary" @click.stop="handleShowAddLesson(data)"
+              >添加课时</el-button
+            >
             <el-select
               class="select-status"
               v-model="data.status"
@@ -39,7 +39,9 @@
           </span>
           <!-- lession -->
           <span v-else class="actions">
-            <el-button @click="handleShowEditLesson(data, node.parent.data)">编辑</el-button>
+            <el-button @click="handleShowEditLesson(data, node.parent.data)"
+              >编辑</el-button
+            >
             <el-button type="success">上传视频</el-button>
             <el-select
               class="select-status"
@@ -52,17 +54,14 @@
               <el-option label="已更新" :value="2" />
             </el-select>
           </span>
-        </div>
+        </template>
       </el-tree>
     </el-card>
     <!-- /阶段列表 -->
 
     <!-- 添加阶段 -->
-    <el-dialog
-      title="添加课程阶段"
-      :visible.sync="isAddSectionShow"
-    >
-      <el-form ref="section-form" :model="section" label-width="70px">
+    <el-dialog title="添加课程阶段" v-model:visible="isAddSectionShow">
+      <el-form ref="sectionForm" :model="section" label-width="70px">
         <el-form-item label="课程名称">
           <el-input
             :value="course.courseName"
@@ -74,13 +73,17 @@
           <el-input v-model="section.sectionName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="章节描述" prop="description">
-          <el-input v-model="section.description" type="textarea" autocomplete="off"></el-input>
+          <el-input
+            v-model="section.description"
+            type="textarea"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="章节排序" prop="orderNum">
           <el-input-number v-model="section.orderNum"></el-input-number>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div class="dialog-footer">
         <el-button @click="isAddSectionShow = false">取 消</el-button>
         <el-button type="primary" @click="handleAddSection">确 定</el-button>
       </div>
@@ -88,10 +91,7 @@
     <!-- /添加阶段 -->
 
     <!-- 添加课时 -->
-    <el-dialog
-      title="添加课时"
-      :visible.sync="isAddLessonShow"
-    >
+    <el-dialog title="添加课时" v-model:visible="isAddLessonShow">
       <el-form ref="lesson-form" :model="lesson" label-width="100px">
         <el-form-item label="课程名称">
           <el-input
@@ -101,14 +101,22 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="章节名称" prop="sectionName">
-          <el-input :value="lesson.sectionName" disabled autocomplete="off"></el-input>
+          <el-input
+            :value="lesson.sectionName"
+            disabled
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="课时名称" prop="sectionName">
           <el-input v-model="lesson.theme" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="时长" prop="description">
-          <el-input v-model.number="lesson.duration" type="number" autocomplete="off">
-            <template slot="append">分钟</template>
+          <el-input
+            v-model.number="lesson.duration"
+            type="number"
+            autocomplete="off"
+          >
+            <template v-slot:append>分钟</template>
           </el-input>
         </el-form-item>
         <el-form-item label="是否开放试听" prop="description">
@@ -118,7 +126,7 @@
           <el-input-number v-model="lesson.orderNum"></el-input-number>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div class="dialog-footer">
         <el-button @click="isAddLessonShow = false">取 消</el-button>
         <el-button type="primary" @click="handleAddLesson">确 定</el-button>
       </div>
@@ -128,153 +136,196 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { defineComponent, reactive, Ref, ref } from 'vue'
 import {
   getSectionAndLesson,
   createOrUpdateSection,
-  getSectionById
+  getSectionById,
+  SaveOrUpdateSectionReq
 } from '@/services/course-section'
-import { getCourseById } from '@/services/course'
-import { Form } from 'element-ui'
+import { getCourseById, GetCourseData } from '@/services/course'
+import { ElForm, ElMessage } from 'element-plus'
+//@ts-ignore
+import {
+  createOrUpdateLesson,
+  SaveOrUpdateLessonReq
+} from '@/services/course-lesson'
 
+type Nullable<T> = {
+  [K in keyof T]: T[K] | null
+}
 
-export default Vue.extend({
-  name: 'CourseSection',
-  props: {
-    courseId: {
-      type: [String, Number],
-      required: true
-    }
+const defaultProps = reactive({
+  children: 'lessonDTOS',
+  label(data: any) {
+    return data.sectionName || data.theme
+  }
+})
+
+const section: Ref<Partial<SaveOrUpdateSectionReq>> = ref({
+  courseId: undefined,
+  sectionName: '',
+  description: '',
+  orderNum: 0,
+  status: 0
+})
+const lesson: Ref<Nullable<Partial<SaveOrUpdateLessonReq>>> = ref({
+  courseId: null,
+  sectionId: undefined,
+  sectionName: '',
+  theme: '',
+  duration: 0,
+  isFree: false,
+  orderNum: 0,
+  status: 0
+})
+const course = ref({
+  id: 0,
+  courseName: '',
+  brief: '',
+  teacherDTO: {
+    id: 0,
+    courseId: 0,
+    teacherName: '',
+    teacherHeadPicUrl: '',
+    position: '',
+    description: ''
   },
-  data () {
-    const defaultProps = {
-      children: 'lessonDTOS',
-      label (data: any) {
-        return data.sectionName || data.theme
-      }
-    }
+  courseDescriptionMarkDown: '',
+  price: 0,
+  discounts: 0,
+  priceTag: '',
+  previewFirstField: '',
+  previewSecondField: '',
+  discountsTag: '',
+  courseListImg: '',
+  courseImgUrl: '',
+  sortNum: 0,
+  status: 0,
+  sales: 0,
+  activityCourse: true,
+  activityCourseDTO: {
+    id: 0,
+    courseId: 0,
+    beginTime: '',
+    endTime: '',
+    amount: 0,
+    stock: 0
+  }
+})
+const sections = ref([])
 
-    const section = {
-      courseId: this.courseId,
-      sectionName: '',
-      description: '',
-      orderNum: 0,
-      status: 0
-    }
+const isAddSectionShow = ref(false)
+const isAddLessonShow = ref(false)
+const isLoading = ref(false)
 
-    const lesson = {
-      courseId: this.courseId,
-      sectionId: undefined,
-      sectionName: '',
+const sectionForm: Ref<null | typeof ElForm> = ref(null)
+
+const useLoadData = (courseId: string | number) => {
+  async function loadCourse() {
+    const { data } = await getCourseById(courseId)
+    course.value = data.data as any
+  }
+
+  async function loadSections() {
+    const { data } = await getSectionAndLesson(courseId)
+    sections.value = data.data as any
+  }
+
+  return {
+    loadCourse,
+    loadSections
+  }
+}
+
+const useHandler = (courseId: string | number) => {
+  const { loadCourse, loadSections } = useLoadData(courseId)
+
+  function handleShowAddSection(courseId: number) {
+    // 防止数据还是编辑时获取的数据
+    section.value.courseId = courseId
+    section.value.sectionName = ''
+    section.value.description = ''
+    section.value.orderNum = 0
+    section.value.status = 0
+
+    isAddSectionShow.value = true
+  }
+
+  async function handleAddSection() {
+    const { data } = await createOrUpdateSection(
+      section.value as SaveOrUpdateSectionReq
+    )
+    loadSections()
+    isAddSectionShow.value = false
+    sectionForm.value!.resetFields()
+    ElMessage.success('操作成功')
+  }
+
+  async function handleEditSectionShow(section: any) {
+    const { data } = await getSectionById(section.id)
+    section.value = data.data
+    isAddSectionShow.value = true
+  }
+
+  async function handleSectionStatusChange(section: any) {
+    await createOrUpdateSection(section)
+    ElMessage.success('操作成功')
+  }
+
+  async function handleLessonStatusChange(lesson: any) {
+    await createOrUpdateLesson(lesson)
+    ElMessage.success('操作成功')
+  }
+
+  function handleShowAddLesson(data: any) {
+    console.log(data)
+    lesson.value = {
+      sectionName: data.sectionName,
+      sectionId: data.id,
+      courseId: courseId as any,
       theme: '',
       duration: 0,
       isFree: false,
       orderNum: 0,
       status: 0
     }
+    isAddLessonShow.value = true
+  }
 
-    return {
-      course: {},
-      sections: [],
-      defaultProps,
-      isAddSectionShow: false,
-      section,
-      isAddLessonShow: false,
-      lesson,
-      isLoading: false
-    }
-  },
+  async function handleAddLesson() {
+    await createOrUpdateLesson(lesson.value as SaveOrUpdateLessonReq)
+    ElMessage.success('操作成功')
+    loadSections()
+    isAddLessonShow.value = false
+  }
 
-  created () {
-    this.loadSections()
-    this.loadCourse()
-  },
+  function handleShowEditLesson(_lesson: any, _section: any) {
+    lesson.value = _lesson
+    lesson.value.sectionName = _section.sectionName
+    isAddLessonShow.value = true
+  }
 
-  methods: {
-    async loadCourse () {
-      const { data } = await getCourseById(this.courseId)
-      this.course = data.data
-    },
+  function handleAllowDrop(draggingNode: any, dropNode: any, type: any) {
+    // draggingNode 拖动的节点
+    // dropNode 放置的目标节点
+    // type：'prev'、'inner' 和 'next'，分别表示放置在目标节点前、插入至目标节点和放置在目标节点后
+    return (
+      draggingNode.data.sectionId === dropNode.data.sectionId &&
+      type !== 'inner'
+    )
+  }
 
-    async loadSections () {
-      const { data } = await getSectionAndLesson(this.courseId)
-      this.sections = data.data
-    },
-
-    handleShowAddSection () {
-      this.section = { // 防止数据还是编辑时获取的数据
-        courseId: this.courseId,
-        sectionName: '',
-        description: '',
-        orderNum: 0,
-        status: 0
-      }
-      this.isAddSectionShow = true
-    },
-
-    async handleAddSection () {
-      const { data } = await createOrUpdateSection(this.section)
-      this.loadSections()
-      this.isAddSectionShow = false
-      ;(this.$refs['section-form'] as Form).resetFields()
-      this.$message.success('操作成功')
-    },
-
-    async handleEditSectionShow (section: any) {
-      const { data } = await getSectionById(section.id)
-      this.section = data.data
-      this.isAddSectionShow = true
-    },
-
-    async handleSectionStatusChange (section: any) {
-      await createOrUpdateSection(section)
-      this.$message.success('操作成功')
-    },
-
-    async handleLessonStatusChange (lesson: any) {
-      await saveOrUpdateLesson(lesson)
-      this.$message.success('操作成功')
-    },
-
-    handleShowAddLesson (data: any) {
-      console.log(data)
-      this.lesson = {
-        sectionName: data.sectionName,
-        sectionId: data.id,
-        courseId: this.courseId,
-        theme: '',
-        duration: 0,
-        isFree: false,
-        orderNum: 0,
-        status: 0
-      }
-      this.isAddLessonShow = true
-    },
-
-    async handleAddLesson () {
-      await saveOrUpdateLesson(this.lesson)
-      this.$message.success('操作成功')
-      this.loadSections()
-      this.isAddLessonShow = false
-    },
-
-    handleShowEditLesson (lesson: any, section: any) {
-      this.lesson = lesson
-      this.lesson.sectionName = section.sectionName
-      this.isAddLessonShow = true
-    },
-
-    handleAllowDrop (draggingNode: any, dropNode: any, type: any) {
-      // draggingNode 拖动的节点
-      // dropNode 放置的目标节点
-      // type：'prev'、'inner' 和 'next'，分别表示放置在目标节点前、插入至目标节点和放置在目标节点后
-      return draggingNode.data.sectionId === dropNode.data.sectionId && type !== 'inner'
-    },
-
-    async handleSort (dragNode: any, dropNode: any, type: any, event: any) {
-      this.isLoading = true
-      try {
-        await Promise.all(dropNode.parent.childNodes.map((item: any, index: number) => {
+  async function handleSort(
+    dragNode: any,
+    dropNode: any,
+    type: any,
+    event: any
+  ) {
+    isLoading.value = true
+    try {
+      await Promise.all(
+        dropNode.parent.childNodes.map((item: any, index: number) => {
           if (dragNode.data.lessonDTOS) {
             // 阶段
             return createOrUpdateSection({
@@ -283,18 +334,83 @@ export default Vue.extend({
             })
           } else {
             // 课时
-            return saveOrUpdateLesson({
+            return createOrUpdateLesson({
               id: item.data.id,
               orderNum: index + 1
             })
           }
-        }))
-        this.$message.success('排序成功')
-      } catch (err) {
-        console.log(err)
-        this.$message.error('排序失败')
-      }
-      this.isLoading = false
+        })
+      )
+      ElMessage.success('排序成功')
+    } catch (err) {
+      console.log(err)
+      ElMessage.error('排序失败')
+    }
+    isLoading.value = false
+  }
+
+  return {
+    handleShowAddSection,
+    handleAddSection,
+    handleEditSectionShow,
+    handleSectionStatusChange,
+    handleLessonStatusChange,
+    handleShowAddLesson,
+    handleAddLesson,
+    handleShowEditLesson,
+    handleAllowDrop,
+    handleSort
+  }
+}
+
+export default defineComponent({
+  name: 'CourseSection',
+  props: {
+    courseId: {
+      type: [String, Number],
+      required: true
+    }
+  },
+
+  setup(props) {
+    const { loadSections, loadCourse } = useLoadData(props.courseId)
+
+    loadSections()
+    loadCourse()
+
+    const {
+      handleShowAddSection,
+      handleAddSection,
+      handleEditSectionShow,
+      handleSectionStatusChange,
+      handleLessonStatusChange,
+      handleShowAddLesson,
+      handleAddLesson,
+      handleShowEditLesson,
+      handleAllowDrop,
+      handleSort
+    } = useHandler(props.courseId)
+
+    return {
+      defaultProps,
+      sections,
+      lesson,
+      course,
+      section,
+      isAddSectionShow,
+      isAddLessonShow,
+      isLoading,
+      sectionForm,
+      handleShowAddSection,
+      handleAddSection,
+      handleEditSectionShow,
+      handleSectionStatusChange,
+      handleLessonStatusChange,
+      handleShowAddLesson,
+      handleAddLesson,
+      handleShowEditLesson,
+      handleAllowDrop,
+      handleSort
     }
   }
 })

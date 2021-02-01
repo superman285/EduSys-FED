@@ -5,14 +5,14 @@
 </template>
 
 <script lang="ts">
-import { createApp, defineComponent } from "vue";
+import { createApp, defineComponent } from 'vue'
 import CreateOrEditCourse from './components/CreateOrEdit.vue'
 
 export default defineComponent({
   name: 'CourseCreate',
   components: {
     CreateOrEditCourse
-  },
+  }
 })
 </script>
 

@@ -84,7 +84,7 @@ export const allocRoleMenus = (data: AllocRoleData) => {
   })
 }
 
-export const getRoleMenus = (roleId:string|number)=> {
+export const getRoleMenus = (roleId: string | number) => {
   return request({
     method: 'GET',
     url: '/boss/menu/getRoleMenus',

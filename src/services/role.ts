@@ -5,27 +5,27 @@
 import request from '@/utils/request'
 
 type QueryFilter = {
-  current: number,
-  size: number,
+  current: number
+  size: number
   name: string
 }
 
 type CreateFilter = {
-  code: string,
-  name: string,
+  code: string
+  name: string
   description: string
 }
 
 export type Role = {
-  id:          number;
-  createdBy:   string;
-  updatedBy:   string;
-  createdTime: string;
-  updatedTime: string;
-  operatorId:  null | number;
-  code:        string;
-  name:        string;
-  description: string;
+  id: number
+  createdBy: string
+  updatedBy: string
+  createdTime: string
+  updatedTime: string
+  operatorId: null | number
+  code: string
+  name: string
+  description: string
 }
 
 export const getRoles = (data: QueryFilter) => {

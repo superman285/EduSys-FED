@@ -113,7 +113,7 @@ import {
 import { getCurrentInstance } from 'vue'
 
 import CreateOrEdit from './CreateOrEdit.vue'
-import { ElForm, ElMessage, ElMessageBox } from "element-plus";
+import { ElForm, ElMessage, ElMessageBox } from 'element-plus'
 type TForm = typeof ElForm
 
 /*const categoryId = ref(null)
@@ -400,6 +400,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

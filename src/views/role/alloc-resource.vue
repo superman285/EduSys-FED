@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, Ref, ref } from "vue";
+import { reactive, Ref, ref } from 'vue'
 import { defineComponent, getCurrentInstance, onMounted } from 'vue'
 
 import {
@@ -52,15 +52,14 @@ const useResource = () => {
     children: 'resourceList',
     label: 'name'
   })
-  const checkedKeys:Ref<Array<number>> = ref([])
+  const checkedKeys: Ref<Array<number>> = ref([])
   const menuTree = ref(null)
-
 
   const loadResources = async () => {
     const ret = await Promise.all([getAllResources(), getResourceCategories()])
     const resources = ret[0].data.data
     const resourceCategories = ret[1].data.data
-    console.log('reourceCategories in alloc-resource',resourceCategories)
+    console.log('reourceCategories in alloc-resource', resourceCategories)
 
     /*resources.forEach((r: any) => {
       const category = resourceCategories.find((c: any) => c.id === r.categoryId)
@@ -77,11 +76,12 @@ const useResource = () => {
 
   const loadCheckedKeys = (_resources: Array<any>) => {
     _resources.forEach((r: any) => {
-      r.resourceList && r.resourceList.forEach((c: any) => {
-        if (c.selected) {
-          checkedKeys.value = [...checkedKeys.value , c.id]
-        }
-      })
+      r.resourceList &&
+        r.resourceList.forEach((c: any) => {
+          if (c.selected) {
+            checkedKeys.value = [...checkedKeys.value, c.id]
+          }
+        })
     })
   }
 
@@ -93,13 +93,13 @@ const useResource = () => {
     menus.value = roleMenus
 
     loadCheckedKeys(roleMenus)
-    console.log('checkedKeys2',checkedKeys)
+    console.log('checkedKeys2', checkedKeys)
   }
 
   const onSave = async (roleId: string | number) => {
     const resourceIdList = (menuTree.value! as TTree).getCheckedKeys()
     const { data } = await allocRoleResources({
-      roleId:+roleId,
+      roleId: +roleId,
       resourceIdList
     })
 
@@ -108,8 +108,8 @@ const useResource = () => {
     //router.back()
   }
 
-  const clearChecked = ()=>{
-    (menuTree.value! as TTree).setCheckedKeys([])
+  const clearChecked = () => {
+    ;(menuTree.value! as TTree).setCheckedKeys([])
   }
 
   return {
@@ -146,7 +146,6 @@ export default defineComponent({
 
     loadResources()
     loadRoleResources(props.roleId)
-
 
     return {
       menus,

@@ -18,15 +18,15 @@ let akak:akb = {
 	[1]: 13
 }*/
 
-function init<T>(param:T):void{
-	console.log(param)
+function init<T>(param: T): void {
+  console.log(param)
 }
 
 console.log(init(2))
 
 function get<T extends object, K extends keyof T>(obj: T, key: K): T[K] {
-	return obj[key]
+  return obj[key]
 }
 
-let obj = {a:1,b:2}
-console.log(get<typeof obj,keyof typeof obj>(obj,'b'))
+const obj = { a: 1, b: 2 }
+console.log(get<typeof obj, keyof typeof obj>(obj, 'b'))

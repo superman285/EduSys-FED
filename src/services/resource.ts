@@ -5,12 +5,11 @@
 import request from '@/utils/request'
 import { AxiosPromise } from 'axios'
 
-
 type Resource = {
-  id: number | null,
-  name: string,
-  url: string,
-  categoryId: number | null,
+  id: number | null
+  name: string
+  url: string
+  categoryId: number | null
   description: string
 }
 
@@ -43,7 +42,7 @@ export const allocRoleResources = (data: any) => {
   })
 }
 
-export const getResourceById = (id:number)=>{
+export const getResourceById = (id: number) => {
   return request({
     method: 'GET',
     url: `/boss/resource/${id}`
@@ -69,31 +68,35 @@ export const getRoleResources = (roleId: string | number) => {
 }
 
 type ResourceCategoryRes = {
-  code: string,
-  mesg: string,
-  time: string,
+  code: string
+  mesg: string
+  time: string
   data: Array<ResourceCategoryTop>
 }
 
 export type BaseResourceCategory = {
-  name:        string;
-  id:          number;
-  sort?:        number;
-  createdBy:   string;
-  selected:    boolean;
-  updatedBy:   string;
-  createdTime: string;
-  updatedTime: string;
-  operatorId:  number | null;
+  name: string
+  id: number
+  sort?: number
+  createdBy: string
+  selected: boolean
+  updatedBy: string
+  createdTime: string
+  updatedTime: string
+  operatorId: number | null
 }
 
-type ResourceSubCategory = BaseResourceCategory & {categoryId:number,url:string,description:string}
+type ResourceSubCategory = BaseResourceCategory & {
+  categoryId: number
+  url: string
+  description: string
+}
 
 export type ResourceCategoryTop = BaseResourceCategory & {
   children: Array<ResourceSubCategory>
 }
 
-export const getResourceCategories = ():any/*AxiosPromise<ResourceCategoryRes>*/ => {
+export const getResourceCategories = (): any /*AxiosPromise<ResourceCategoryRes>*/ => {
   return request({
     method: 'GET',
     url: '/boss/resource/category/getAll'

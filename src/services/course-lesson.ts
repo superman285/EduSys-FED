@@ -3,27 +3,30 @@
  */
 
 import request from '@/utils/request'
-import { AxiosPromise } from "axios";
+import { AxiosPromise } from 'axios'
 
-type SaveOrUpdateLessonReq = {
-  id:        number|string;
-  courseId:  number;
-  sectionId: number;
-  theme:     string;
-  duration:  number;
-  isFree:    boolean;
-  orderNum:  number;
-  status:    number;
+export type SaveOrUpdateLessonReq = {
+  id: number | string
+  sectionName?: string
+  courseId: number
+  sectionId: number
+  theme: string
+  duration: number
+  isFree: boolean
+  orderNum: number
+  status: number
 }
 
 type LessonAPIRes<T> = {
-  code: string;
-  mesg: string;
-  time: string;
-  data: T;
+  code: string
+  mesg: string
+  time: string
+  data: T
 }
 
-export const createOrUpdateLesson = (data: SaveOrUpdateLessonReq):AxiosPromise<LessonAPIRes<any>> => {
+export const createOrUpdateLesson = (
+  data: Partial<SaveOrUpdateLessonReq>
+): AxiosPromise<LessonAPIRes<any>> => {
   return request({
     method: 'POST',
     url: '/boss/course/lesson/saveOrUpdate',

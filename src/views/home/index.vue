@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import {ComponentInternalInstance, onMounted} from 'vue'
+import { ComponentInternalInstance, onMounted } from 'vue'
 import { getCurrentInstance } from 'vue'
 import { defineComponent } from 'vue'
 

@@ -111,8 +111,6 @@ import { defineComponent, reactive, Ref, ref, onErrorCaptured } from 'vue'
 import { getQueryCourses, changeState, CourseData } from '@/services/course'
 import { ElForm, ElMessage } from 'element-plus'
 
-
-
 const filterParams = reactive({
   currentPage: 1,
   pageSize: 20,
@@ -130,7 +128,7 @@ const courses: Ref<Array<CourseData>> = ref([])
 // 或者这样
 const useCourseData = () => {
   const courses: Ref<Array<CourseData>> = ref([])
-  const updateCourses = (newVal:any) => {
+  const updateCourses = (newVal: any) => {
     courses.value = newVal
   }
   return {
@@ -140,16 +138,15 @@ const useCourseData = () => {
 }
 
 const useCourse = () => {
-
   const loadCourses = async () => {
     console.log('now filterParams', filterParams)
     isLoading.value = true
     const { data } = await getQueryCourses(filterParams)
-    data.data.records.forEach((item) => {
+    data.data.records.forEach(item => {
       item.isStatusLoading = false
     })
     courses.value = data.data.records
-    console.log('courses after filter',courses)
+    console.log('courses after filter', courses)
     totalCount.value = data.data.total
     isLoading.value = false
   }
@@ -180,7 +177,7 @@ const useCourseForm = () => {
   }
 
   async function handleStateChange(course: CourseData) {
-    console.log('default run handle state change',course)
+    console.log('default run handle state change', course)
 
     if (course.id) {
       course.isStatusLoading = true
@@ -192,7 +189,6 @@ const useCourseForm = () => {
       ElMessage.success(`${course.status === 0 ? '下架' : '上架'}成功!`)
       course.isStatusLoading = false
     }
-
   }
 
   return {
@@ -211,9 +207,9 @@ export default defineComponent({
     const { loadCourses } = useCourse()
     loadCourses()
 
-    onErrorCaptured((err,err2)=>{
-      console.dir(err);
-      console.log('err:',err,err2)
+    onErrorCaptured((err, err2) => {
+      console.dir(err)
+      console.log('err:', err, err2)
     })
 
     const {

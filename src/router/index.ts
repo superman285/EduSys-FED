@@ -9,7 +9,6 @@ import Layout from '@/Layout/index.vue'
 
 import store from '@/store/index'
 
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
@@ -129,7 +128,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/role/:roleId/alloc-menu',
         name: 'alloc-menu',
-        component: () => import(/* webpackChunkName: 'alloc-menu' */ '@/views/role/alloc-menu.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: 'alloc-menu' */ '@/views/role/alloc-menu.vue'
+          ),
         props: true, // 将路由路径参数映射到组件的 props 数据中
         meta: {
           requiresAuth: true // 自定义数据 是否需要任证券
@@ -138,24 +140,36 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/role/:roleId/alloc-resource',
         name: 'alloc-resource',
-        component: () => import(/* webpackChunkName: 'alloc-resource' */ '@/views/role/alloc-resource.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: 'alloc-resource' */ '@/views/role/alloc-resource.vue'
+          ),
         props: true // 将路由路径参数映射到组件的 props 数据中
       },
       {
         path: '/course/create',
         name: 'course-create',
-        component: () => import(/* webpackChunkName: 'course-create' */ '@/views/course/create.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: 'course-create' */ '@/views/course/create.vue'
+          )
       },
       {
         path: '/course/:courseId/edit',
         name: 'course-edit',
-        component: () => import(/* webpackChunkName: 'course-edit' */ '@/views/course/edit.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: 'course-edit' */ '@/views/course/edit.vue'
+          ),
         props: true
       },
       {
         path: '/course/:courseId/section',
         name: 'course-section',
-        component: () => import(/* webpackChunkName: 'course-section' */ '@/views/course/section.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: 'course-section' */ '@/views/course/section.vue'
+          ),
         props: true
       }
     ]

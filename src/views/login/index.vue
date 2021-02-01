@@ -49,9 +49,6 @@ import { login } from '@/services/user'
 import { ElMessage, ElForm } from 'element-plus'
 // import Form from 'element-plus/lib/el-form/src/form.vue'
 
-
-
-
 export default defineComponent({
   name: 'LoginIndex',
   data() {
@@ -79,7 +76,7 @@ export default defineComponent({
   methods: {
     ...mapMutations(['setUser'])
   },
-  setup(props,context) {
+  setup(props, context) {
     // eslint-disable-next-line
     let form = reactive({
       phone: '13011150313',
@@ -89,7 +86,7 @@ export default defineComponent({
 
     // const app = getCurrentInstance()
     const { ctx: _this } = getCurrentInstance() as ComponentInternalInstance
-    console.log('ctx', _this,context,props)
+    console.log('ctx', _this, context, props)
 
     const router = useRouter()
     const route = useRoute()

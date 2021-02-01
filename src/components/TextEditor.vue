@@ -3,21 +3,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, Ref, useContext } from "vue";
+import { defineComponent, onMounted, Ref, ref, useContext } from 'vue'
 import E from 'wangeditor'
-import {DomElementSelector} from 'wangeditor/src/utils/dom-core'
+import { DomElementSelector } from 'wangeditor/src/utils/dom-core'
 
-const editor:Ref<null|DomElementSelector> = ref(null)
-const initEditor = (value) => {
-  const editor = new E(editor.value)
-  const {emit} = useContext()
+const editor: Ref<null | DomElementSelector> = ref(null)
+const initEditor = (val: any) => {
+  const wrappedEditor = new E(editor.value as any)
+  const { emit } = useContext()
   // 注意：事件监听必须在 create 之前
-  editor.config.onchange = (value: string) => {
+  wrappedEditor.config.onchange = (value: string) => {
     emit('input', value)
   }
-  editor.create()
+  wrappedEditor.create()
   // 注意：设置初始化必须在 create 之后
-  editor.txt.html(value)
+  wrappedEditor.txt.html(val)
 }
 
 export default defineComponent({
@@ -29,9 +29,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-
     // 组件已经渲染好，可以初始化操作 DOM 了
-    onMounted(()=>{
+    onMounted(() => {
       initEditor(props.value)
     })
     return {

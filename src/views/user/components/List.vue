@@ -93,7 +93,6 @@
         </span>
       </template>
     </el-dialog>
-
   </el-card>
 </template>
 
@@ -101,7 +100,12 @@
 import { defineComponent, ref, reactive, Ref, toRefs } from 'vue'
 import { getUserPages, forbidUser, UserRecord } from '@/services/user'
 import { ElForm } from 'element-plus'
-import { getAllRoles, allocateUserRoles, getUserRoles, Role } from '@/services/role'
+import {
+  getAllRoles,
+  allocateUserRoles,
+  getUserRoles,
+  Role
+} from '@/services/role'
 
 const useUser = () => {
   const users: Ref<Array<UserRecord>> = ref([])
@@ -117,7 +121,7 @@ const useUser = () => {
   const dialogVisible = ref(false)
   const userTotalCount = ref(0)
 
-  const loadUsers = async (_filterParams:typeof filterParams) => {
+  const loadUsers = async (_filterParams: typeof filterParams) => {
     isLoading.value = true
     const { rangeDate } = toRefs(_filterParams)
     if (rangeDate.value?.length) {
@@ -128,42 +132,44 @@ const useUser = () => {
       _filterParams.endCreateTime = ''
     }
     const { data } = await getUserPages(_filterParams)
-    console.log('loadUsers',rangeDate,data)
+    console.log('loadUsers', rangeDate, data)
     users.value = data.data.records
     userTotalCount.value = data.data.total
     isLoading.value = false
   }
 
-  const handleForbidUser = async (userId:number)=>{
+  const handleForbidUser = async (userId: number) => {
     const { data } = await forbidUser(userId)
-    console.log('forbidUser',data)
+    console.log('forbidUser', data)
   }
 
-  const handleQuery = async ()=>{
+  const handleQuery = async () => {
     filterParams.currentPage = 1
     loadUsers(filterParams)
   }
 
-  const filterForm:Ref<typeof ElForm | null> = ref(null)
-  const handleReset = ()=>{
+  const filterForm: Ref<typeof ElForm | null> = ref(null)
+  const handleReset = () => {
     filterForm.value!.resetFields()
     loadUsers(filterParams)
   }
 
-  const roles:Ref<Array<Role>> = ref([])
-  const roleIdList:Ref<Array<number>> = ref([])
-  const currentUser:Ref<null|Role> = ref(null)
+  const roles: Ref<Array<Role>> = ref([])
+  const roleIdList: Ref<Array<number>> = ref([])
+  const currentUser: Ref<null | Role> = ref(null)
 
-  const handleSelectRole = async (role:Role)=>{
+  const handleSelectRole = async (role: Role) => {
     currentUser.value = role
-    const {data} = await getAllRoles()
+    const { data } = await getAllRoles()
     roles.value = data.data
-    const { data: {data: userRoles}} = await getUserRoles(currentUser.value.id)
-    roleIdList.value = userRoles.map((roleOfUser:Role)=>roleOfUser.id)
+    const {
+      data: { data: userRoles }
+    } = await getUserRoles(currentUser.value.id)
+    roleIdList.value = userRoles.map((roleOfUser: Role) => roleOfUser.id)
     dialogVisible.value = true
   }
-  const handleAllocRole = async ()=>{
-    const {data} = await allocateUserRoles({
+  const handleAllocRole = async () => {
+    const { data } = await allocateUserRoles({
       userId: currentUser.value!.id,
       roleIdList: roleIdList.value
     })
@@ -176,7 +182,7 @@ const useUser = () => {
     loadUsers(filterParams)
   }
 
-  const handleCurrentChange = (curVal: number)=>{
+  const handleCurrentChange = (curVal: number) => {
     filterParams.currentPage = curVal
     loadUsers(filterParams)
   }
@@ -200,7 +206,6 @@ const useUser = () => {
     handleSizeChange,
     handleCurrentChange
   }
-
 }
 
 export default defineComponent({

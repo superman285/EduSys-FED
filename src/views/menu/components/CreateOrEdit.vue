@@ -75,7 +75,7 @@ const loadMenuInfo = async (
   }
   if (data.code === '000000') {
     // 可省去as
-    (instance as ComponentInternalInstance).data.parentMenuList =
+    ;(instance as ComponentInternalInstance).data.parentMenuList =
       data.data.parentMenuList
   }
 }
@@ -83,7 +83,7 @@ const loadMenuInfo = async (
 async function onSubmit(instance: UnwrapRef<ComponentInternalInstance | null>) {
   const { data } = await createOrUpdateMenu(instance?.data?.form as IMenu)
   if (data.data?.menuInfo /*&& instance?.data?.form*/) {
-    (instance as ComponentInternalInstance).data.form = data.data.menuInfo
+    ;(instance as ComponentInternalInstance).data.form = data.data.menuInfo
   }
   if (data.code === '000000') {
     ElMessage({

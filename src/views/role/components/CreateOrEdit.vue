@@ -63,7 +63,7 @@ export default defineComponent({
   name: 'CreateOrEditRole',
   props: {
     roleId: {
-      type: [String, Number]  // string | number
+      type: [String, Number] // string | number
     },
     isEdit: {
       type: Boolean,
@@ -72,8 +72,6 @@ export default defineComponent({
   },
 
   //emits:['success','cancel'],
-
-
 
   setup(props, { emit }) {
     const { role, onSubmit, onCancel, loadRole } = useRole(emit)

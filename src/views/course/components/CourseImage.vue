@@ -36,7 +36,7 @@ const useUpload = () => {
   const beforeAvatarUpload = (file: File, limit: number): boolean => {
     const isJPG = file.type === 'image/jpeg'
 
-    const isLt2M = file.size / 1024 / 1024 < (limit|| 4)
+    const isLt2M = file.size / 1024 / 1024 < (limit || 4)
     if (!isJPG) {
       ElMessage.error('上传头像图片只能为JPG格式!')
     }
@@ -54,7 +54,7 @@ const useUpload = () => {
       const fd = new FormData()
       fd.append('file', options.file)
       const { data } = await uploadCourseImage(fd, e => {
-        percentage.value = Math.floor(e.loaded / e.total * 100)
+        percentage.value = Math.floor((e.loaded / e.total) * 100)
       })
       if (data.code === '000000') {
         isUploading.value = false
@@ -79,7 +79,6 @@ const useUpload = () => {
     percentage
   }
 }
-
 
 export default defineComponent({
   name: 'CourseImage',
@@ -107,7 +106,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-::v-deep(.avatar-uploader .el-upload) {
+:deep(.avatar-uploader .el-upload) {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;

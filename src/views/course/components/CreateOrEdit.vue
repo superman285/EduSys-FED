@@ -130,7 +130,7 @@
         </div>
         <div v-show="activeStep === 4">
           <el-form-item label="课程详情">
-          <text-editor v-model="course.courseDescriptionMarkDown" />
+            <text-editor v-model="course.courseDescriptionMarkDown" />
             <!-- <el-input v-model="course.courseDescriptionMarkDown" type="textarea"></el-input> -->
           </el-form-item>
           <el-form-item label="是否发布">
@@ -161,8 +161,9 @@ import { createApp, defineComponent, reactive, ref, toRefs } from 'vue'
 import {
   createOrUpdateCourse,
   getCourseById,
-  GetCourseData, SaveOrUpdateReq
-} from "@/services/course";
+  GetCourseData,
+  SaveOrUpdateReq
+} from '@/services/course'
 import CourseImage from './CourseImage.vue'
 import TextEditor from '@/components/TextEditor.vue'
 import moment from 'moment'
@@ -241,8 +242,8 @@ const handleSave = async (router: Router) => {
 export default defineComponent({
   name: 'CreateOrEditCourse',
   components: {
-    CourseImage
-    //TextEditor
+    CourseImage,
+    TextEditor
   },
   props: {
     isEdit: {
